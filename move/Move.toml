@@ -1,0 +1,15 @@
+[package]
+name = "sosui_media"
+edition = "2024.beta"
+version = "0.1.0"
+
+[dependencies]
+# Sui framework deps are auto-included by the local Sui CLI's bundled framework
+# (matches whichever release the installed `sui` binary was built from).
+# To pin to a specific framework version, add explicit deps here.
+
+[addresses]
+sosui_media = "0x0"
+
+[dev-addresses]
+sosui_media = "0x0"

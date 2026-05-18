@@ -1,0 +1,25 @@
+{
+  "name": "sosui-media-move",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "sui move build",
+    "test": "sui move test",
+    "check": "tsx scripts/check.ts",
+    "publish": "tsx scripts/publish.ts",
+    "update-treasury": "tsx scripts/update-treasury.ts",
+    "update-fees": "tsx scripts/update-fees.ts",
+    "withdraw": "tsx scripts/withdraw.ts",
+    "test-create": "tsx scripts/test-create-room.ts"
+  },
+  "dependencies": {
+    "@mysten/sui": "^1.18.0",
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.10",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.3"
+  }
+}

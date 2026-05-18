@@ -1,0 +1,298 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Outfit:ital,wght@0,400;0,600;0,800;0,900;1,400;1,600;1,800;1,900&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html,
+body {
+  background: #050505;
+  color: #e0e0e0;
+  min-height: 100vh;
+  font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+body::selection,
+body *::selection {
+  background: #4da2ff;
+  color: #050505;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Ambient gradient backdrop on the body — mimics the reference's decorative blobs */
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  width: 28rem;
+  height: 28rem;
+  border-radius: 9999px;
+  filter: blur(120px);
+  pointer-events: none;
+  z-index: -1;
+}
+
+body::before {
+  background: rgba(111, 188, 240, 0.08);
+  top: 4rem;
+  left: -6rem;
+}
+
+body::after {
+  background: rgba(77, 162, 255, 0.06);
+  bottom: 4rem;
+  right: -6rem;
+}
+
+/* Glow utilities */
+.glow-aqua {
+  box-shadow: 0 0 15px rgba(111, 188, 240, 0.4);
+}
+
+.glow-blue {
+  box-shadow: 0 0 15px rgba(77, 162, 255, 0.4);
+}
+
+/* Break out of a constrained-width parent and span viewport edge-to-edge.
+   Pairs nicely with overflow-hidden on the page wrapper. */
+.full-bleed {
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+}
+
+/* Pixel scatter — small squares drift upward and fade, echoing the logo's
+   dispersing-pixels motif. Each particle has its own delay/duration set inline. */
+@keyframes pixel-drift {
+  0%   { transform: translate3d(0, 0, 0); opacity: 0; }
+  15%  { opacity: 0.9; }
+  85%  { opacity: 0.6; }
+  100% { transform: translate3d(0, -56px, 0); opacity: 0; }
+}
+
+/* Animated gradient text — slow brand-colour sheen for emphasis words.
+   Replaces a static bg-clip gradient so the colours visibly flow. */
+.gradient-sheen {
+  background: linear-gradient(
+    110deg,
+    #6fbcf0 0%,
+    #4da2ff 28%,
+    #6fbcf0 56%,
+    #4da2ff 84%,
+    #6fbcf0 100%
+  );
+  background-size: 260% 100%;
+  -webkit-background-clip: text;
+          background-clip: text;
+  color: transparent;
+  animation: gradient-pan 11s linear infinite;
+}
+@keyframes gradient-pan {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 260% 50%; }
+}
+
+/* True 1px gradient border via mask-composite. Ambient at low opacity,
+   brightens on hover. Apply with .gradient-border on a relatively-positioned
+   element that has its own rounded-* radius. */
+.gradient-border {
+  position: relative;
+}
+.gradient-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(111, 188, 240, 0.55), rgba(77, 162, 255, 0.55));
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0.35;
+  transition: opacity 0.5s ease;
+}
+.gradient-border:hover::before,
+.gradient-border.is-active::before {
+  opacity: 1;
+}
+
+/* Lightning sweep — a diagonal sheen passes across the element on hover,
+   evoking the logo's chat-bubble-with-slash. Requires overflow-hidden on host. */
+.lightning-sweep {
+  position: relative;
+}
+.lightning-sweep::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    115deg,
+    transparent 35%,
+    rgba(255, 255, 255, 0.08) 50%,
+    transparent 65%
+  );
+  transform: translateX(-100%);
+  transition: transform 0.7s ease;
+  pointer-events: none;
+}
+.lightning-sweep:hover::after {
+  transform: translateX(100%);
+}
+
+/* Hero atmospheric grid — square mesh with a radial mask so it fades to nothing
+   at the edges, focusing attention on the headline. */
+.hero-grid {
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+  background-size: 64px 64px;
+  -webkit-mask-image: radial-gradient(ellipse 65% 55% at 50% 40%, black 25%, transparent 80%);
+  mask-image: radial-gradient(ellipse 65% 55% at 50% 40%, black 25%, transparent 80%);
+}
+
+/* Slow-breathing brand orbs. Two phases so they don't pulse in sync. */
+@keyframes hero-breathe-a {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1);    opacity: 0.65; }
+  50%      { transform: translate3d(2%, -3%, 0) scale(1.08); opacity: 1; }
+}
+@keyframes hero-breathe-b {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1);     opacity: 0.55; }
+  50%      { transform: translate3d(-2%, 4%, 0) scale(1.12); opacity: 0.9; }
+}
+
+.hero-orb-aqua {
+  background: rgba(111, 188, 240, 0.22);
+  filter: blur(130px);
+  animation: hero-breathe-a 14s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+.hero-orb-blue {
+  background: rgba(77, 162, 255, 0.16);
+  filter: blur(130px);
+  animation: hero-breathe-b 18s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+/* Faint horizontal scanlines — adds a CRT/cryptographic texture without being noisy. */
+.hero-scanlines {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 3px,
+    rgba(255, 255, 255, 0.012) 3px,
+    rgba(255, 255, 255, 0.012) 4px
+  );
+}
+
+/* Per-bit flicker for the noise sphere. Each .noise-bit instance sets its own
+   animation-duration and animation-delay inline; --bit-base is the bit's
+   depth-derived peak opacity so the back of the sphere fades softer. */
+@keyframes noise-bit-flicker {
+  0%, 100% { opacity: var(--bit-base, 0.7); }
+  45%, 55% { opacity: calc(var(--bit-base, 0.7) * 0.18); }
+}
+.noise-bit {
+  animation-name: noise-bit-flicker;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
+
+/* Cascading character rain — used during the intro→step-01 hand-off so the
+   noise sphere visually "rains" down into the materializing card. */
+@keyframes char-rain {
+  0%   { transform: translateY(10vh); opacity: 0; }
+  12%  { opacity: 0.9; }
+  85%  { opacity: 0.9; }
+  100% { transform: translateY(85vh); opacity: 0; }
+}
+.char-rain {
+  animation-name: char-rain;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+/* Inverse of char-rain — particles rise and dissolve, used at the close
+   stage to "evaporate" the room. */
+@keyframes char-evaporate {
+  0%   { transform: translateY(0); opacity: 0; }
+  18%  { opacity: 0.85; }
+  82%  { opacity: 0.35; }
+  100% { transform: translateY(-55vh); opacity: 0; }
+}
+.char-evaporate {
+  animation-name: char-evaporate;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-out;
+}
+
+/* Subtle dot grid backdrop for narrative sections */
+.dot-grid {
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+.dot-grid-tight {
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 18px 18px;
+}
+
+/* Vertical guide lines, evokes legend.xyz column rhythm */
+.guide-lines::before,
+.guide-lines::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: rgba(255, 255, 255, 0.04);
+  pointer-events: none;
+}
+.guide-lines::before { left: 25%; }
+.guide-lines::after { right: 25%; }
+
+/* Hidden scrollbar */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Wallet adapter overrides — keep the brand gradient pill */
+.wallet-adapter-button {
+  background: linear-gradient(135deg, #6fbcf0, #4da2ff) !important;
+  color: #050505 !important;
+  font-weight: 700 !important;
+  border-radius: 12px !important;
+  height: 40px !important;
+  font-size: 12px !important;
+  letter-spacing: 0.15em !important;
+  text-transform: uppercase !important;
+  padding: 0 16px !important;
+  box-shadow: 0 0 15px rgba(77, 162, 255, 0.35) !important;
+}
+
+.wallet-adapter-button:hover {
+  filter: brightness(1.08);
+}
+
+.wallet-adapter-modal-wrapper {
+  background: #0a0a0a !important;
+  border: 1px solid #222222 !important;
+  border-radius: 1.5rem !important;
+}
+
+.wallet-adapter-modal-button-close {
+  background: #111 !important;
+}
